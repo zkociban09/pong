@@ -25,12 +25,12 @@ function love.load()
 
   love.window.setTitle("Pong")
 
-sounds ={
-  ['paddle_hit'] = love.audio.newSource('paddle_sound.wav','static'),
-  ['side_hit'] = love.audio.newSource('wall_hit.wav','static'),
-  ['score'] = love.audio.newSource('score_sound.wav','static'),
-  ['sound_of_victory'] = love.audio.newSource('victory_sound.wav','static')
-}
+  sounds ={
+   ['paddle_hit'] = love.audio.newSource('paddle_sound.wav','static'),
+   ['side_hit'] = love.audio.newSource('wall_hit.wav','static'),
+   ['score'] = love.audio.newSource('score_sound.wav','static'),
+   ['sound_of_victory'] = love.audio.newSource('victory_sound.wav','static')
+ }
 
 
   gameState = 'start'
@@ -39,7 +39,7 @@ sounds ={
   fullscreen = false,
   vsync = true,
   resizable = true
-})
+ })
   servingPlayer = math.random(2) == 1 and 1 or 2
   winningPlayer = 0
   paddle1 = Paddle(5,20,5,20)
@@ -51,8 +51,9 @@ sounds ={
   else
     ball.dx = -150
   end
-  function love.resize(w,h)
+function love.resize(w,h)
     push:resize(w,h)
+  end
 end
 function love.update(dt)
   if gameState == 'play' then
@@ -90,7 +91,11 @@ function love.update(dt)
     end
 
     paddle1:update(dt)
-    paddle2:update(dt)
+    paddle2:ai(dt,ball)
+
+
+
+
 
     if ball:collides(paddle1) then
       ball.dx = -ball.dx * 1.03
@@ -121,7 +126,6 @@ function love.update(dt)
     if ball.y <= 0 then
       ball.dy = -ball.dy
       ball.y = 0
-
       sounds['side_hit']:play()
     end
 
@@ -168,6 +172,7 @@ function love.keypressed(key)
       gameState = 'start'
     elseif gameState == 'serve' then
       gameState = 'play'
+
 
     end
   end

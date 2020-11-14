@@ -18,6 +18,14 @@ function Paddle:update(dt)
   end
 end
 
+function Paddle:ai(dt,ball)
+  if ball.y < 0 then
+    self.y = math.max(0,ball.y * 0.88 + ball.dy * dt)
+  elseif ball.y > 0 then
+    self.y = math.min(VIRTUAL_HEIGHT-20,ball.y * 0.88 + ball.dy * dt)
+
+  end
+end
 function Paddle:render()
   love.graphics.rectangle('fill',self.x,self.y,self.width,self.height)
 end
